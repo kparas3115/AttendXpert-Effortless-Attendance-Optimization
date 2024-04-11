@@ -1,9 +1,8 @@
-import os
 import tkinter as tk
-from tkinter import filedialog
-import pandas as pd
+import os
+import win32com.client as win32
 
-class viewexcel:
+class ViewExcel:
     def __init__(self, master):
         self.master = master
         self.master.title("Excel File Viewer")
@@ -34,11 +33,10 @@ class viewexcel:
         self.open_button.grid(row=2, column=1, padx=5, pady=5, sticky=tk.EW)
 
         self.update_file_list()
-        self.timer()
 
     def update_file_list(self):
-        directory = os.getcwd()  # Assuming the current working directory
-        self.file_list = [f for f in os.listdir(directory) if f.endswith('.xlsx')]
+        directory = 'C:\\Users\paras\OneDrive\डेस्कटॉप\Excel Files'
+        self.file_list = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
         self.filtered_files = self.file_list[:]
         self.update_file_listbox()
 
@@ -56,27 +54,22 @@ class viewexcel:
         selected_index = self.file_listbox.curselection()
         if selected_index:
             selected_file = self.filtered_files[selected_index[0]]
-            file_path = os.path.join(os.getcwd(), selected_file)
-            df = pd.read_excel(file_path)
-            print(df)  # You can replace this with your desired action with the dataframe
+            file_path = os.path.join('C:\\Users\paras\OneDrive\डेस्कटॉप\Excel Files', selected_file)
+            os.startfile(file_path)  # Open the selected file with its associated program
 
     def view_excel(self):
         selected_index = self.file_listbox.curselection()
         if selected_index:
             selected_file = self.filtered_files[selected_index[0]]
-            file_path = os.path.join(os.getcwd(), selected_file)
-            os.system(file_path)
-
-    def timer(self):
-        self.update_file_list()
-        self.master.after(5000, self.timer)  # Update every 5 seconds
-
+            file_path = os.path.join('C:\\Users\paras\OneDrive\डेस्कटॉप\Excel Files', selected_file)
+            excel = win32.Dispatch("Excel.Application")
+            excel.Visible = True
+            workbook = excel.Workbooks.Open(file_path, ReadOnly=True)  # Open the selected file in read-only mode
 
 def main():
     root = tk.Tk()
-    app = viewexcel(root)
+    app = ViewExcel(root)
     root.mainloop()
-
 
 if __name__ == "__main__":
     main()

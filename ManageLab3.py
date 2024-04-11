@@ -26,31 +26,27 @@ class ManageLab3(tk.Tk):
         self.cg_button = tk.Button(self, text="Manage Attendance For CG", command=self.open_cg)
         self.cg_button.place(x=50, y=180, width=300, height=20)
 
-    def open_em3(self):
-        # Replace 'loopRunner()' with the appropriate code to manage attendance for EM3
-        print("Opening Manage Attendance For EM3")
-        LoopRunner11()
+        def open_em3(self):
+            print("Opening Manage Attendance For EM3")
+            LoopRunner11()
 
-    def open_dsgt(self):
-        # Replace 'loopRunner2()' with the appropriate code to manage attendance for DSGT
-        print("Opening Manage Attendance For DSGT")
-        LoopRunner12()
+        def open_dsgt(self):
+            print("Opening Manage Attendance For DSGT")
+            LoopRunner12()
 
     def open_ds(self):
-        # Replace 'loopRunner3()' with the appropriate code to manage attendance for DS
         print("Opening Manage Attendance For DS")
         LoopRunner13()
 
     def open_dlcoa(self):
-        # Replace 'loopRunner4()' with the appropriate code to manage attendance for DLCOA
         print("Opening Manage Attendance For DLCOA")
         LoopRunner14()
 
     def open_cg(self):
-        # Replace 'loopRunner5()' with the appropriate code to manage attendance for CG
         print("Opening Manage Attendance For CG")
         LoopRunner15()
 
 if __name__ == "__main__":
     app = ManageLab3()
     app.mainloop()
+

@@ -4,7 +4,6 @@ import pymysql.cursors
 import pandas as pd
 from pandasgui import show
 
-
 class LoopRunner19(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -31,6 +30,12 @@ class LoopRunner19(tk.Tk):
         self.view_button = tk.Button(self, text="View Existing", width=15, command=self.view_existing)
         self.view_button.place(x=500, y=380)
 
+        self.backward_button = tk.Button(self, text="<< Backward", width=15, command=self.backward)
+        self.backward_button.place(x=200, y=420)
+
+        self.forward_button = tk.Button(self, text="Forward >>", width=15, command=self.forward)
+        self.forward_button.place(x=350, y=420)
+
     def present_action(self):
         if self.roll_count < 70:
             self.roll_count += 1
@@ -45,21 +50,17 @@ class LoopRunner19(tk.Tk):
 
                 with connection:
                     with connection.cursor() as cursor:
-                        sql = "UPDATE stud_details SET ds = ds + 1 WHERE rollno = %s"
+                        sql = "UPDATE stud_details SET em3 = em3 + 1 WHERE rollno = %s"
                         cursor.execute(sql, (self.roll_count,))
                         connection.commit()
 
             except pymysql.Error as e:
                 print("Error:", e)
-        else:
-            self.destroy()  # Close the GUI window when the roll count reaches 70
 
     def absent_action(self):
         if self.roll_count < 70:
             self.roll_count += 1
             self.roll_label.config(text=str(self.roll_count))
-        else:
-            self.destroy()  # Close the GUI window when the roll count reaches 70
 
     def attach_excel(self):
         file_path = filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx;*.xls")])
@@ -74,6 +75,15 @@ class LoopRunner19(tk.Tk):
         else:
             print("No Excel sheet attached yet.")
 
+    def backward(self):
+        if self.roll_count > 1:
+            self.roll_count -= 1
+            self.roll_label.config(text=str(self.roll_count))
+
+    def forward(self):
+        if self.roll_count < 70:
+            self.roll_count += 1
+            self.roll_label.config(text=str(self.roll_count))
 
 if __name__ == "__main__":
     app = LoopRunner19()
