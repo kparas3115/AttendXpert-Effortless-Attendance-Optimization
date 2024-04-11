@@ -1,23 +1,21 @@
 import tkinter as tk
-from tkinter import filedialog
 import datetime
 import wikipedia
 import speech_recognition as sr
 import os
 import webbrowser
 import pyttsx3
-from ManageAttendance import ManageAttendance
-from viewexcel import viewexcel
-from ManageLab import ManageLab
-from ManageLab2 import ManageLab2
-from ManageLab3 import ManageLab3
+
 from LoopRunner import LoopRunner
 from LoopRunner2 import LoopRunner2
 from LoopRunner3 import LoopRunner3
 from LoopRunner4 import LoopRunner4
 from LoopRunner5 import LoopRunner5
-
-
+from ManageAttendance import ManageAttendance
+from ManageLab import ManageLab
+from ManageLab2 import ManageLab2
+from ManageLab3 import ManageLab3
+from viewexcel import ViewExcel  # Assuming you have a ViewExcel class
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
@@ -51,35 +49,16 @@ def take_command():
         print("Understanding...")
         query = r.recognize_google(audio, language="en-in")
         print(f"User said: {query}\n")
-
+        return query
     except Exception as e:
         print("Please Say Again")
         return "None"
-    return query
 
 
 def open_manage_attendance():
     speak("Opening Attendance for AIML")
     manage_attendance = ManageAttendance()
     manage_attendance.mainloop()
-
-
-def open_manage_lab():
-    speak("Opening Lab Attendance")
-    lab_attendance = ManageLab()
-    lab_attendance.mainloop()
-
-
-def open_manage_lab2():
-    speak("Opening Lab Attendance For B2 Batch")
-    lab_attendance2 = ManageLab2()
-    lab_attendance2.mainloop()
-
-
-def open_manage_lab3():
-    speak("Opening Lab Attendance For B3 Batch")
-    lab_attendance3 = ManageLab3()
-    lab_attendance3.mainloop()
 
 
 def open_em3():
@@ -115,6 +94,31 @@ def open_dlcoa():
 def open_second_year():
     codepath2 = "C:\\Users\paras\Downloads\DSE-AIML 2023.xlsx"
     os.startfile(codepath2)
+
+
+def open_manage_lab():
+    speak("Opening Lab Attendance")
+    lab_attendance = ManageLab()
+    lab_attendance.mainloop()
+
+
+def open_manage_lab2():
+    speak("Opening Lab Attendance For B2 Batch")
+    lab_attendance2 = ManageLab2()
+    lab_attendance2.mainloop()
+
+
+def open_manage_lab3():
+    speak("Opening Lab Attendance For B3 Batch")
+    lab_attendance3 = ManageLab3()
+    lab_attendance3.mainloop()
+
+
+def view_excel():
+    speak("Opening Excel Records")
+    root = tk.Tk()  # Create a Tkinter root window
+    excel_viewer = ViewExcel(root)  # Pass the root window as the master argument
+    root.mainloop()
 
 
 if __name__ == '__main__':
@@ -187,8 +191,14 @@ if __name__ == '__main__':
         elif 'dlc' in query:
             open_dlcoa()
 
-        elif 'direct second year' in query:
+        elif "direct second year" in query:
             open_second_year()
+
+        elif "kaisan ba" in query:
+            speak("Thik Ba")
+
+        elif 'excel' in query:
+            view_excel()
 
     root = tk.Tk()
     root.title("AMS AI")

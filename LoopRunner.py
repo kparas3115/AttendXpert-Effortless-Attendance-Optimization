@@ -4,7 +4,6 @@ import pymysql.cursors
 import pandas as pd
 from pandasgui import show
 
-
 class LoopRunner(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -30,6 +29,12 @@ class LoopRunner(tk.Tk):
 
         self.view_button = tk.Button(self, text="View Existing", width=15, command=self.view_existing)
         self.view_button.place(x=500, y=380)
+
+        self.backward_button = tk.Button(self, text="<< Backward", width=15, command=self.backward)
+        self.backward_button.place(x=200, y=420)
+
+        self.forward_button = tk.Button(self, text="Forward >>", width=15, command=self.forward)
+        self.forward_button.place(x=350, y=420)
 
     def present_action(self):
         self.roll_count += 1
@@ -68,6 +73,15 @@ class LoopRunner(tk.Tk):
         else:
             print("No Excel sheet attached yet.")
 
+    def backward(self):
+        if self.roll_count > 1:
+            self.roll_count -= 1
+            self.roll_label.config(text=str(self.roll_count))
+
+    def forward(self):
+        # Here you can implement logic to move forward
+        self.roll_count += 1
+        self.roll_label.config(text=str(self.roll_count))
 
 if __name__ == "__main__":
     app = LoopRunner()
