@@ -15,7 +15,7 @@ from ManageAttendance import ManageAttendance
 from ManageLab import ManageLab
 from ManageLab2 import ManageLab2
 from ManageLab3 import ManageLab3
-from viewexcel import ViewExcel  # Assuming you have a ViewExcel class
+from viewexcel import ViewExcel
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
