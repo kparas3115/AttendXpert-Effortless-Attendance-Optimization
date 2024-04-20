@@ -1,68 +1,75 @@
 import tkinter as tk
-from tkinter import ttk
 from tkinter import messagebox
-import sqlite3
-
+import mysql.connector
+import subprocess
 class Login(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.geometry("600x400")
 
         self.title("Login")
+        self.geometry("600x400")
 
-        self.username_label = ttk.Label(self, text="Username", font=("Tahoma", 20, "bold"))
-        self.username_label.place(x=100, y=80)
+        self.f1 = ("Tahoma", 20, "bold")
 
-        self.password_label = ttk.Label(self, text="Password", font=("Tahoma", 20, "bold"))
-        self.password_label.place(x=100, y=160)
+        l1 = tk.Label(self, text="Username", font=self.f1)
+        l1.place(x=100, y=80)
 
-        self.username_entry = ttk.Entry(self, font=("Tahoma", 20))
-        self.username_entry.place(x=250, y=80, width=150)
+        l2 = tk.Label(self, text="Password", font=self.f1)
+        l2.place(x=100, y=160)
 
-        self.password_entry = ttk.Entry(self, show="*", font=("Tahoma", 20))
-        self.password_entry.place(x=250, y=160, width=150)
+        self.username = tk.Entry(self, font=self.f1)
+        self.username.place(x=250, y=80, width=150)
 
-        self.signin_button = ttk.Button(self, text="Sign In", command=self.signin, style="TButton")
-        self.signin_button.place(x=200, y=260, width=120, height=50)
+        self.password = tk.Entry(self, font=self.f1, show="*")
+        self.password.place(x=250, y=160, width=150)
 
-        self.cancel_button = ttk.Button(self, text="Cancel", command=self.cancel, style="TButton")
-        self.cancel_button.place(x=400, y=260, width=120, height=50)
+        self.signin = tk.Button(self, text="Sign In", font=self.f1, command=self.authenticate)
+        self.signin.place(x=200, y=260, width=120, height=50)
 
-        self.style = ttk.Style()
-        self.style.configure("TButton", font=("Tahoma", 20))
+        self.cancel = tk.Button(self, text="Cancel", font=self.f1, command=self.destroy)
+        self.cancel.place(x=400, y=260, width=120, height=50)
 
-    def signin(self):
-        username = self.username_entry.get()
-        password = self.password_entry.get()
+    def authenticate(self):
+        username = self.username.get()
+        password = self.password.get()
 
         try:
-            conn = sqlite3.connect('your_database.db')
+            conn = mysql.connector.connect(
+                host='localhost',
+                user='root',
+                password='kps@3115',
+                database='colmonsys'
+            )
             c = conn.cursor()
-            c.execute("SELECT * FROM login WHERE username = ? AND password = ?", (username, password))
-            result = c.fetchone()
 
-            if result:
-                messagebox.showinfo("Success", "Login Successful")
-                self.destroy()
-                dashboard = Dashboard()
-                dashboard.mainloop()
+            c.execute("SELECT * FROM login WHERE username=%s AND password=%s", (username, password))
+            row = c.fetchone()
+
+            if row:
+                messagebox.showinfo("Login Successful", "Login Successful")
+                self.destroy()  # Close login window
+                AssistantOpener()  # Open assistantopener window
             else:
-                messagebox.showerror("Error", "Invalid Login Credentials")
+                messagebox.showerror("Invalid Credentials", "Invalid Login Credentials")
 
             conn.close()
-        except Exception as e:
+        except mysql.connector.Error as e:
             print(e)
 
-    def cancel(self):
-        self.destroy()
-
-class Dashboard(tk.Tk):
+class AssistantOpener(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.geometry("800x600")
-        self.title("Dashboard")
 
-        # Add your dashboard widgets here
+        self.title("Assistant Opener")
+        self.geometry("300x200")
+
+        self.activate_button = tk.Button(self, text="Activate AttendXpert", font=("Tahoma", 12), command=self.activate_attendxpert)
+        self.activate_button.place(relx=0.5, rely=0.5, anchor="center")
+
+    def activate_attendxpert(self):
+        # Add your code here to activate AttendXpert (AMS AI)
+       print('AttendXpert Activated!')
+
 
 if __name__ == "__main__":
     login = Login()
