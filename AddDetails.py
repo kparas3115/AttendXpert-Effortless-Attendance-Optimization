@@ -89,3 +89,8 @@ class AddDetails(tk.Tk):
 if __name__ == "__main__":
     app = AddDetails()
     app.mainloop()
+
+
+
+
+# djwaj
